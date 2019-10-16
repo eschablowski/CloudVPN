@@ -1,0 +1,60 @@
+version: 3.7
+services:
+  entrypoint:
+    image: cloudvpn/entrypoint
+    build: ../entrypoint
+    deploy:
+      mode: global
+    network:
+      vpn:
+        aliases:
+          - entrypoint
+
+  endpoint:
+    image: cloudvpn/endpoint
+    build: ../endpoint
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    network:
+      vpn:
+        aliases:
+          - endpoint
+  authentication:
+    image: cloudvpn/authenticator
+    build: ../authenticator
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    network:
+      vpn:
+        aliases:
+          - authenticator
+      auth:
+        aliases:
+          - authenticator
+  database:
+    image: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    network:
+      vpn:
+        aliases:
+          - authenticator
+      auth:
+        aliases:
+          - authenticator
+volumes:
+  db-data:
+networks:
+  vpn:
+  auth:

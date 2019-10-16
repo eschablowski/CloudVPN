@@ -1,0 +1,3 @@
+// the configured options and settings for Tutorial
+#define CloudVPN_VERSION_MAJOR @CloudVPN_VERSION_MAJOR@
+#define CloudVPN_VERSION_MINOR @CloudVPN_VERSION_MINOR@
