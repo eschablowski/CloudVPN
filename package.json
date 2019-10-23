@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "description": "The entrypoint code for the CloudVPN cluster",
+  "main": "index.js",
+  "workspaces": [
+    "authenticator",
+    "endpoint",
+    "entrypoint"
+  ],
+  "repository": "https://github.com/cloudvpn/cloudvpn",
+  "author": "Elias Schablowski",
+  "license": "GNU",
+  "private": true
+}
