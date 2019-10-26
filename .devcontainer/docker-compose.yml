@@ -5,28 +5,75 @@
 
 version: '3'
 services:
-  web:
+  builder:
     # Uncomment the next line to use a non-root user. On Linux, this will prevent
     # new files getting created as root, but you may need to update the USER_UID
     # and USER_GID in .devcontainer/Dockerfile to match your user if not 1000.
     user: node
 
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
-    
+
     volumes:
       - ..:/workspace
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
-    
+
     links:
       - mongo
-
+    networks:
+      - vpn
+  authenticator:
+    # user: node
+    build:
+      context: ../authenticator
+      dockerfile: Dockerfile
+    volumes:
+      - ../authenticator/build:/home/node/cloudvpn/authenticator/build
+    command: /bin/sh -c "npm i -g nodemon && nodemon /home/node/cloudvpn/authenticator/build/main.js"
+    networks:
+      vpn:
+        aliases:
+          - authenticator.cloudvpn.com
+      auth:
+        aliases:
+          - authenticator
+  # entrypoint:
+  #   user: node
+  #   build:
+  #     context: ../entrypoint
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ../entrypoint/build:/cloudvpn/entrypoint/build
+  #   command: npm i -g nodemon && nodemon /cloudvpn/entrypoint/build/main.js
+    # networks:
+    #   vpn:
+    #     aliases:
+    #       - entrypoint.cloudvpn.com
+  # endpoint:
+  #   user: node
+  #   build:
+  #     context: ../endpoint
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ../endpoint/build:/cloudvpn/endpoint/build
+  #   command: npm i -g nodemon && nodemon /cloudvpn/endpoint/build/main.js
+  #   networks:
+  #     vpn:
+  #       aliases:
+  #         - authenticator.cloudvpn.com
   mongo:
     image: mongo
     restart: unless-stopped
+    # networks:
+    #   auth:
+    #     aliases:
+    #       - userDB
     volumes:
       - /data/db
- 
+
+networks:
+  vpn:
+  auth:

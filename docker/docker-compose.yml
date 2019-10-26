@@ -23,7 +23,7 @@ services:
         aliases:
           - endpoint
   authentication:
-    image: cloudvpn/authenticator
+    image: cloudvpn/authenticator:latest
     build: ../authenticator
     deploy:
       mode: global
@@ -37,8 +37,8 @@ services:
       auth:
         aliases:
           - authenticator
-  database:
-    image: mysql
+  userDatabase:
+    image: mongodb:lastest
     volumes:
       - db-data:/var/lib/mysql
     deploy:
@@ -47,12 +47,22 @@ services:
         constraints:
           - node.role == manager
     network:
-      vpn:
-        aliases:
-          - authenticator
       auth:
         aliases:
-          - authenticator
+          - userDB
+  userDatabase:
+    image: redis:latest
+    volumes:
+      - db-data:/var/lib/mysql
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+    network:
+      auth:
+        aliases:
+          - userDB
 volumes:
   db-data:
 networks:

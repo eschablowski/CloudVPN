@@ -1,7 +1,6 @@
 const paths = require("./paths");
 const webpack = require("webpack");
 const nodeExternals = require('webpack-node-externals');
-var HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 
 module.exports = async function () {
     return {
@@ -46,8 +45,7 @@ module.exports = async function () {
             new webpack.BannerPlugin({
                 banner: "require('source-map-support').install();",
                 raw: true
-            }),
-            new HardSourceWebpackPlugin()
+            })
         ],
         externals: [
             nodeExternals(),
