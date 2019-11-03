@@ -73,6 +73,15 @@ services:
     #       - userDB
     volumes:
       - /data/db
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    networks:
+      auth:
+        aliases:
+          - redis.authenticator.cloudvpn.com
+    volumes:
+      - /data/db
 
 networks:
   vpn:

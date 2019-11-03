@@ -1,6 +1,6 @@
 // If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
 {
-	"name": "Node.js & Mongo DB",
+	"name": "CloudVPN",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "builder",
 	"workspaceFolder": "/workspace",
@@ -24,6 +24,7 @@
 	// Add the IDs of extensions you want installed when the container is created in the array below.
 	"extensions": [
 		"dbaeumer.vscode-eslint",
-		"redhat.vscode-yaml"
+		"redhat.vscode-yaml",
+		"editorconfig.editorconfig"
 	]
 }
